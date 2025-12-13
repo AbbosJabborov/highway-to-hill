@@ -52,16 +52,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Slide",
-                    "type": "Button",
-                    "id": "86233c2c-9407-4cca-94ab-8f95dbbbf175",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Jump",
+                    "name": "Brake",
                     "type": "Button",
                     "id": "f1ba0d36-48eb-4cd5-b651-1c94a6531f70",
                     "expectedControlType": "",
@@ -82,7 +73,7 @@
                     "name": "Next",
                     "type": "Button",
                     "id": "b7230bb6-fc9b-4f52-8b25-f5e19cb2c2ba",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -91,33 +82,6 @@
                     "name": "Sprint",
                     "type": "Button",
                     "id": "641cd816-40e6-41b4-8c3d-04687c349290",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Primary",
-                    "type": "Button",
-                    "id": "5dc4b397-f8df-4e8b-89f4-648836d81f58",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Secondary",
-                    "type": "Button",
-                    "id": "bdd3226a-02b8-47f9-b393-5de05c779370",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Tertiary",
-                    "type": "Button",
-                    "id": "78e9f44e-7ad5-48a9-954d-851d5a7a7616",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -427,7 +391,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Jump",
+                    "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -438,7 +402,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Jump",
+                    "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -449,7 +413,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
-                    "action": "Jump",
+                    "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -516,61 +480,6 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Crouch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "669f16e4-d99e-4aa6-a63e-12386bb80a1c",
-                    "path": "<Gamepad>/rightStickPress",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Slide",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ecdea05d-7626-4050-b9bb-79300d865b6e",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Slide",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "73c238d6-36ed-4f2c-b0c8-631eeb08eb01",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Primary",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "07c10601-8cb5-4b48-9570-7e63bab6bcdf",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Secondary",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8903cff3-8f89-4ab7-9965-5ea1f5c19169",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Tertiary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
