@@ -1,9 +1,9 @@
 ﻿#if UNITY_EDITOR
 
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
-namespace Com.Vertexyz.DI
+namespace Editor
 {
     [InitializeOnLoad]
     public class HierarchyExtension

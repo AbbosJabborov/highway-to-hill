@@ -4,7 +4,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Extensions
+namespace Editor
 {
     [InitializeOnLoad]
     public static class BootstrapSceneLoader

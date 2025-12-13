@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace UI.Future_Expansions
+namespace Extensions
 {
     public class ImageFiller : MonoBehaviour
     {
