@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 3718156672877087478}
   - component: {fileID: 283843103656126986}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Car
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
