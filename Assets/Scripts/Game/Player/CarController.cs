@@ -3,152 +3,151 @@ using UnityEngine.InputSystem;
 
 namespace Game.Player
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class CarController : MonoBehaviour
     {
         [Header("Wheel Colliders")]
-        public WheelCollider frontLeftCollider;
-        public WheelCollider frontRightCollider;
-        public WheelCollider rearLeftCollider;
-        public WheelCollider rearRightCollider;
+        [Tooltip("Wheel meshes to visually represent the wheels.")]
+        public WheelCollider frontLeft;
+        public WheelCollider frontRight;
+        public WheelCollider rearLeft;
+        public WheelCollider rearRight;
 
         [Header("Wheel Meshes")]
+        [Tooltip("Wheel meshes to visually represent the wheels.")]
         public Transform frontLeftMesh;
         public Transform frontRightMesh;
         public Transform rearLeftMesh;
         public Transform rearRightMesh;
 
-        [Header("Car Settings")]
+        [Header("Driving")]
         public float motorForce = 1500f;
         public float brakeForce = 3000f;
         public float maxSteerAngle = 30f;
+        public float steeringSmooth = 0.6f;
 
-        [Header("Center of Mass")]
-        public Transform centerOfMass;
-        public Vector3 centerOfMassOffset = new Vector3(0, -0.9f, 0.2f);
+        [Header("Arcade Drift")]
+        public float driftSidewaysStiffness = 0.4f;
+        public float normalSidewaysStiffness = 1.0f;
+        public float driftForwardStiffness = 0.8f;
+        public float yawAssist = 2.5f;
 
-        private float currentSteer = 0f;
-        private float currentMotor = 0f;
-        private float currentBrake = 0f;
-        private Vector2 moveInput;
-        private bool isBraking = false;
+        // [Header("Center of Mass")]
+        // public Vector3 centerOfMassOffset = new Vector3(0f, -1.1f, 0.2f);
 
         private Rigidbody rb;
+        private Vector2 moveInput;
+        private bool isBraking;
 
-        void Start()
+        void Awake()
         {
             rb = GetComponent<Rigidbody>();
-        
-            if (centerOfMass != null)
-            {
-                rb.centerOfMass = centerOfMass.localPosition;
-            }
-            else
-            {
-                rb.centerOfMass = centerOfMassOffset;
-            }
-
-            ConfigureWheelCollider(frontLeftCollider);
-            ConfigureWheelCollider(frontRightCollider);
-            ConfigureWheelCollider(rearLeftCollider);
-            ConfigureWheelCollider(rearRightCollider);
+            //rb.centerOfMass = centerOfMassOffset;
         }
 
         void FixedUpdate()
         {
             HandleMotor();
             HandleSteering();
+            HandleDrift();
             UpdateWheelMeshes();
         }
-    
+        
         public void OnMove(InputAction.CallbackContext context)
         {
             moveInput = context.ReadValue<Vector2>();
         }
+
         public void OnBrake(InputAction.CallbackContext context)
         {
-            if (context.performed)
+            isBraking = context.performed;
+        }
+        
+        void HandleMotor()
+        {
+            float torque = moveInput.y * motorForce;
+
+            rearLeft.motorTorque  = torque;
+            rearRight.motorTorque = torque;
+
+            float brake = isBraking ? brakeForce : 0f;
+
+            frontLeft.brakeTorque  = brake;
+            frontRight.brakeTorque = brake;
+            rearLeft.brakeTorque   = brake;
+            rearRight.brakeTorque  = brake;
+        }
+        
+        void HandleSteering()
+        {
+            float speed = rb.linearVelocity.magnitude;
+            float steerLimit = Mathf.Lerp(maxSteerAngle, maxSteerAngle * 0.4f, speed / 25f);
+
+            float targetSteer = moveInput.x * steerLimit;
+
+            frontLeft.steerAngle =
+                Mathf.Lerp(frontLeft.steerAngle, targetSteer, steeringSmooth);
+
+            frontRight.steerAngle =
+                Mathf.Lerp(frontRight.steerAngle, targetSteer, steeringSmooth);
+        }
+        
+        void HandleDrift()
+        {
+            if (!isBraking || rb.linearVelocity.magnitude < 2f)
             {
-                isBraking = true;
+                RestoreRearGrip();
+                return;
             }
-            else if (context.canceled)
-            {
-                isBraking = false;
-            }
+            
+            SetRearFriction(driftSidewaysStiffness, driftForwardStiffness);
+            
+            float yaw = moveInput.x * yawAssist;
+            rb.AddTorque(Vector3.up * yaw, ForceMode.Acceleration);
         }
 
-        private void HandleMotor()
+        void RestoreRearGrip()
         {
-            currentMotor = moveInput.y * motorForce;
-        
-            rearLeftCollider.motorTorque = currentMotor;
-            rearRightCollider.motorTorque = currentMotor;
-        
-            if (isBraking)
-            {
-                currentBrake = brakeForce;
-            }
-            else
-            {
-                currentBrake = 0f;
-            }
-
-            frontLeftCollider.brakeTorque = currentBrake;
-            frontRightCollider.brakeTorque = currentBrake;
-            rearLeftCollider.brakeTorque = currentBrake;
-            rearRightCollider.brakeTorque = currentBrake;
+            SetRearFriction(normalSidewaysStiffness, 1.2f);
         }
 
-        private void HandleSteering()
+        void SetRearFriction(float sideways, float forward)
         {
-            // Left/Right input (A/D or Left/Right)
-            currentSteer = moveInput.x * maxSteerAngle;
+            WheelFrictionCurve sf;
+            WheelFrictionCurve ff;
+
+            sf = rearLeft.sidewaysFriction;
+            sf.stiffness = sideways;
+            rearLeft.sidewaysFriction = sf;
+
+            sf = rearRight.sidewaysFriction;
+            sf.stiffness = sideways;
+            rearRight.sidewaysFriction = sf;
+
+            ff = rearLeft.forwardFriction;
+            ff.stiffness = forward;
+            rearLeft.forwardFriction = ff;
+
+            ff = rearRight.forwardFriction;
+            ff.stiffness = forward;
+            rearRight.forwardFriction = ff;
+        }
         
-            frontLeftCollider.steerAngle = currentSteer;
-            frontRightCollider.steerAngle = currentSteer;
+        void UpdateWheelMeshes()
+        {
+            UpdateWheel(frontLeft, frontLeftMesh);
+            UpdateWheel(frontRight, frontRightMesh);
+            UpdateWheel(rearLeft, rearLeftMesh);
+            UpdateWheel(rearRight, rearRightMesh);
         }
 
-        private void UpdateWheelMeshes()
+        void UpdateWheel(WheelCollider col, Transform mesh)
         {
-            UpdateWheelMesh(frontLeftCollider, frontLeftMesh);
-            UpdateWheelMesh(frontRightCollider, frontRightMesh);
-            UpdateWheelMesh(rearLeftCollider, rearLeftMesh);
-            UpdateWheelMesh(rearRightCollider, rearRightMesh);
-        }
+            if (!mesh) return;
 
-        private void UpdateWheelMesh(WheelCollider collider, Transform mesh)
-        {
-            if (mesh == null) return;
-
-            Vector3 pos;
-            Quaternion rot;
-            collider.GetWorldPose(out pos, out rot);
-        
+            col.GetWorldPose(out Vector3 pos, out Quaternion rot);
             mesh.position = pos;
             mesh.rotation = rot;
-        }
-
-        private void ConfigureWheelCollider(WheelCollider collider)
-        {
-            collider.suspensionDistance = 0.2f;
-        
-            // Configure suspension spring
-            JointSpring spring = collider.suspensionSpring;
-            spring.spring = 35000f;
-            spring.damper = 4500f;
-            spring.targetPosition = 0.5f;
-            collider.suspensionSpring = spring;
-
-            // Configure wheel friction for better grip
-            WheelFrictionCurve forwardFriction = collider.forwardFriction;
-            forwardFriction.stiffness = 2f;
-            collider.forwardFriction = forwardFriction;
-
-            WheelFrictionCurve sidewaysFriction = collider.sidewaysFriction;
-            sidewaysFriction.stiffness = 2f;
-            collider.sidewaysFriction = sidewaysFriction;
-
-            // Set wheel mass
-            collider.mass = 20f;
         }
     }
 }

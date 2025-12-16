@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class WaypointManager : MonoBehaviour
+namespace Game.Navigation
 {
-    public GameObject markerPrefab;
-    public Camera cam;
-
-    public void CreateMarker(Transform target)
+    public class WaypointManager : MonoBehaviour
     {
-        GameObject marker = Instantiate(markerPrefab, transform);
-        var ui = marker.GetComponent<WaypointMarker>();
-        ui.target = target;
-        ui.cam = cam;
+        public GameObject markerPrefab;
+        public Camera cam;
+
+        public void CreateMarker(Transform target)
+        {
+            GameObject marker = Instantiate(markerPrefab, transform);
+            var ui = marker.GetComponent<WaypointMarker>();
+            ui.target = target;
+            ui.cam = cam;
+        }
     }
 }
 
