@@ -333,14 +333,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 400313007873727117, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
-      propertyPath: m_SuspensionSpring.damper
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 400313007873727117, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
-      propertyPath: m_SuspensionSpring.spring
-      value: 800
-      objectReference: {fileID: 0}
     - target: {fileID: 2855532171725876301, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -381,37 +373,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2909829396782302984, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
-      propertyPath: m_SuspensionSpring.damper
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 2909829396782302984, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
-      propertyPath: m_SuspensionSpring.spring
-      value: 800
-      objectReference: {fileID: 0}
     - target: {fileID: 3190939972000722873, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_Name
       value: Car
-      objectReference: {fileID: 0}
-    - target: {fileID: 3515113119676020647, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
-      propertyPath: m_SuspensionSpring.damper
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 3515113119676020647, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
-      propertyPath: m_SuspensionSpring.spring
-      value: 800
-      objectReference: {fileID: 0}
-    - target: {fileID: 5638635295351007652, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
-      propertyPath: m_ImplicitCom
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6714542042978941392, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
-      propertyPath: m_SuspensionSpring.damper
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 6714542042978941392, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
-      propertyPath: m_SuspensionSpring.spring
-      value: 800
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5430,7 +5394,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 367796465}
   m_HandleRect: {fileID: 14993786}
   m_Direction: 2
-  m_Value: 1.0000008
+  m_Value: 1.0000006
   m_Size: 0.7
   m_NumberOfSteps: 0
   m_OnValueChanged:
