@@ -7,33 +7,32 @@ namespace Game.Player
     public class CarController : MonoBehaviour
     {
         [Header("Wheel Colliders")]
-        [Tooltip("Wheel meshes to visually represent the wheels.")]
         public WheelCollider frontLeft;
         public WheelCollider frontRight;
         public WheelCollider rearLeft;
         public WheelCollider rearRight;
 
         [Header("Wheel Meshes")]
-        [Tooltip("Wheel meshes to visually represent the wheels.")]
         public Transform frontLeftMesh;
         public Transform frontRightMesh;
         public Transform rearLeftMesh;
         public Transform rearRightMesh;
 
         [Header("Driving")]
-        public float motorForce = 1500f;
-        public float brakeForce = 3000f;
-        public float maxSteerAngle = 30f;
+        public float motorForce = 3500f;           // ↑ arcade value
+        public float brakeForce = 4000f;
+        public float maxSteerAngle = 32f;
         public float steeringSmooth = 0.6f;
+
+        [Header("Acceleration Boost")]
+        public float lowSpeedBoost = 1.6f;         // NEW
+        public float boostFadeSpeed = 12f;          // m/s
 
         [Header("Arcade Drift")]
         public float driftSidewaysStiffness = 0.4f;
         public float normalSidewaysStiffness = 1.0f;
         public float driftForwardStiffness = 0.8f;
-        public float yawAssist = 2.5f;
-
-        // [Header("Center of Mass")]
-        // public Vector3 centerOfMassOffset = new Vector3(0f, -1.1f, 0.2f);
+        public float yawAssist = 3.0f;
 
         private Rigidbody rb;
         private Vector2 moveInput;
@@ -42,7 +41,6 @@ namespace Game.Player
         void Awake()
         {
             rb = GetComponent<Rigidbody>();
-            //rb.centerOfMass = centerOfMassOffset;
         }
 
         void FixedUpdate()
@@ -52,7 +50,7 @@ namespace Game.Player
             HandleDrift();
             UpdateWheelMeshes();
         }
-        
+
         public void OnMove(InputAction.CallbackContext context)
         {
             moveInput = context.ReadValue<Vector2>();
@@ -62,10 +60,17 @@ namespace Game.Player
         {
             isBraking = context.performed;
         }
-        
+
+        // ---------- MOTOR ----------
         void HandleMotor()
         {
-            float torque = moveInput.y * motorForce;
+            float speed = rb.linearVelocity.magnitude;
+
+            // Low-speed punch (fades out with speed)
+            float boost =
+                Mathf.Lerp(lowSpeedBoost, 1f, speed / boostFadeSpeed);
+
+            float torque = moveInput.y * motorForce * boost;
 
             rearLeft.motorTorque  = torque;
             rearRight.motorTorque = torque;
@@ -77,11 +82,16 @@ namespace Game.Player
             rearLeft.brakeTorque   = brake;
             rearRight.brakeTorque  = brake;
         }
-        
+
+        // ---------- STEERING ----------
         void HandleSteering()
         {
             float speed = rb.linearVelocity.magnitude;
-            float steerLimit = Mathf.Lerp(maxSteerAngle, maxSteerAngle * 0.4f, speed / 25f);
+
+            // Steering falloff happens later now
+            float steerFactor = Mathf.InverseLerp(15f, 35f, speed);
+            float steerLimit =
+                Mathf.Lerp(maxSteerAngle, maxSteerAngle * 0.5f, steerFactor);
 
             float targetSteer = moveInput.x * steerLimit;
 
@@ -91,17 +101,18 @@ namespace Game.Player
             frontRight.steerAngle =
                 Mathf.Lerp(frontRight.steerAngle, targetSteer, steeringSmooth);
         }
-        
+
+        // ---------- DRIFT ----------
         void HandleDrift()
         {
-            if (!isBraking || rb.linearVelocity.magnitude < 2f)
+            if (!isBraking || rb.linearVelocity.magnitude < 3f)
             {
                 RestoreRearGrip();
                 return;
             }
-            
+
             SetRearFriction(driftSidewaysStiffness, driftForwardStiffness);
-            
+
             float yaw = moveInput.x * yawAssist;
             rb.AddTorque(Vector3.up * yaw, ForceMode.Acceleration);
         }
@@ -132,7 +143,8 @@ namespace Game.Player
             ff.stiffness = forward;
             rearRight.forwardFriction = ff;
         }
-        
+
+        // ---------- VISUALS ----------
         void UpdateWheelMeshes()
         {
             UpdateWheel(frontLeft, frontLeftMesh);

@@ -12,7 +12,14 @@ namespace Extensions
         [Header("Wheels")]
         [SerializeField] private List<WheelCollider> wheels;
 
+        [Header("Rigidbody")]
+        [SerializeField] private Rigidbody rb;
+        
         // ---------- CAR CORE ----------
+        public void SetMass(float value)
+        {
+            rb.mass = Mathf.Clamp(value, 500f, 3000f);
+        }
         public void SetMotorForce(float value)
         {
             car.motorForce = Mathf.Clamp(value, 0f, 5000f);
@@ -86,6 +93,7 @@ namespace Extensions
         // ---------- DEFAULT ----------
         public void ResetToDefaults()
         {
+            SetMass(1500f);
             SetMotorForce(1500f);
             SetBrakeForce(3000f);
             SetMaxSteerAngle(30f);
