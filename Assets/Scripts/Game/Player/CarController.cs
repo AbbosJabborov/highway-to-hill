@@ -6,160 +6,164 @@ namespace Game.Player
     [RequireComponent(typeof(Rigidbody))]
     public class CarController : MonoBehaviour
     {
-        [Header("Wheel Colliders")]
-        public WheelCollider frontLeft;
-        public WheelCollider frontRight;
-        public WheelCollider rearLeft;
-        public WheelCollider rearRight;
+        [System.Serializable]
+        public class Wheel
+        {
+            public Transform transform;
+            public bool steer;
+            public bool drive;
+        }
 
-        [Header("Wheel Meshes")]
-        public Transform frontLeftMesh;
-        public Transform frontRightMesh;
-        public Transform rearLeftMesh;
-        public Transform rearRightMesh;
+        [Header("Wheels")]
+        public Wheel[] wheels;
 
-        [Header("Driving")]
-        public float motorForce = 3500f;           // ↑ arcade value
-        public float brakeForce = 4000f;
-        public float maxSteerAngle = 32f;
-        public float steeringSmooth = 0.6f;
+        [Header("Suspension")]
+        public float suspensionRestDist = 0.5f;
+        public float suspensionStrength = 20000f;
+        public float suspensionDamper = 3000f;
+        public float wheelRadius = 0.35f;
 
-        [Header("Acceleration Boost")]
-        public float lowSpeedBoost = 1.6f;         // NEW
-        public float boostFadeSpeed = 12f;          // m/s
+        [Header("Grip")]
+        [Range(0f, 1f)] public float tireGrip = 0.9f;
+        public float tireMass = 20f;
 
-        [Header("Arcade Drift")]
-        public float driftSidewaysStiffness = 0.4f;
-        public float normalSidewaysStiffness = 1.0f;
-        public float driftForwardStiffness = 0.8f;
-        public float yawAssist = 3.0f;
+        [Header("Steering")]
+        public float maxSteerAngle = 35f;
+        public float steeringResponse = 8f;
+
+        [Header("Engine")]
+        public float motorForce = 8000f;
+        public float brakeForce = 12000f;
+        public float topSpeed = 45f;
+
+        [Header("Arcade")]
+        public float lowSpeedBoost = 1.5f;
 
         private Rigidbody rb;
         private Vector2 moveInput;
-        private bool isBraking;
+        private bool brake;
 
         void Awake()
         {
             rb = GetComponent<Rigidbody>();
+            rb.mass = 1200f;
+            rb.centerOfMass = new Vector3(0f, -0.8f, 0.2f);
         }
 
         void FixedUpdate()
         {
-            HandleMotor();
-            HandleSteering();
-            HandleDrift();
-            UpdateWheelMeshes();
+            foreach (var wheel in wheels)
+            {
+                ApplySuspension(wheel);
+                ApplyGrip(wheel);
+                ApplyDrive(wheel);
+            }
         }
 
-        public void OnMove(InputAction.CallbackContext context)
+        // ---------- INPUT ----------
+        public void OnMove(InputAction.CallbackContext ctx)
         {
-            moveInput = context.ReadValue<Vector2>();
+            moveInput = ctx.ReadValue<Vector2>();
         }
 
-        public void OnBrake(InputAction.CallbackContext context)
+        public void OnBrake(InputAction.CallbackContext ctx)
         {
-            isBraking = context.performed;
+            brake = ctx.performed;
         }
 
-        // ---------- MOTOR ----------
-        void HandleMotor()
+        // ---------- SUSPENSION ----------
+        void ApplySuspension(Wheel wheel)
         {
-            float speed = rb.linearVelocity.magnitude;
+            RaycastHit hit;
+            Vector3 origin = wheel.transform.position;
+            Vector3 dir = -wheel.transform.up;
 
-            // Low-speed punch (fades out with speed)
-            float boost =
-                Mathf.Lerp(lowSpeedBoost, 1f, speed / boostFadeSpeed);
+            float rayLength = suspensionRestDist + wheelRadius;
+
+            if (!Physics.Raycast(origin, dir, out hit, rayLength))
+                return;
+
+            float offset = suspensionRestDist - (hit.distance - wheelRadius);
+
+            Vector3 vel = rb.GetPointVelocity(origin);
+            float velAlongSpring = Vector3.Dot(wheel.transform.up, vel);
+
+            float force =
+                (offset * suspensionStrength) -
+                (velAlongSpring * suspensionDamper);
+
+            rb.AddForceAtPosition(wheel.transform.up * force, origin);
+        }
+
+        // ---------- LATERAL GRIP ----------
+        void ApplyGrip(Wheel wheel)
+        {
+            RaycastHit hit;
+            if (!Physics.Raycast(wheel.transform.position, -wheel.transform.up,
+                out hit, suspensionRestDist + wheelRadius))
+                return;
+
+            Vector3 vel = rb.GetPointVelocity(wheel.transform.position);
+            Vector3 lateralDir = wheel.transform.right;
+
+            float lateralVel = Vector3.Dot(lateralDir, vel);
+            float desiredVelChange = -lateralVel * tireGrip;
+
+            float accel = desiredVelChange / Time.fixedDeltaTime;
+
+            rb.AddForceAtPosition(
+                lateralDir * (tireMass * accel),
+                wheel.transform.position
+            );
+        }
+
+        // ---------- DRIVE / BRAKE ----------
+        void ApplyDrive(Wheel wheel)
+        {
+            if (!wheel.drive)
+                return;
+
+            RaycastHit hit;
+            if (!Physics.Raycast(wheel.transform.position, -wheel.transform.up,
+                out hit, suspensionRestDist + wheelRadius))
+                return;
+
+            Vector3 forward = wheel.transform.forward;
+
+            float speed = Vector3.Dot(transform.forward, rb.linearVelocity);
+            float speed01 = Mathf.Clamp01(Mathf.Abs(speed) / topSpeed);
+
+            float boost = Mathf.Lerp(lowSpeedBoost, 1f, speed01);
 
             float torque = moveInput.y * motorForce * boost;
 
-            rearLeft.motorTorque  = torque;
-            rearRight.motorTorque = torque;
+            if (brake)
+                torque = -Mathf.Sign(speed) * brakeForce;
 
-            float brake = isBraking ? brakeForce : 0f;
-
-            frontLeft.brakeTorque  = brake;
-            frontRight.brakeTorque = brake;
-            rearLeft.brakeTorque   = brake;
-            rearRight.brakeTorque  = brake;
+            rb.AddForceAtPosition(forward * torque, wheel.transform.position);
         }
 
-        // ---------- STEERING ----------
-        void HandleSteering()
+        // ---------- VISUAL STEERING ----------
+        void Update()
         {
-            float speed = rb.linearVelocity.magnitude;
-
-            // Steering falloff happens later now
-            float steerFactor = Mathf.InverseLerp(15f, 35f, speed);
-            float steerLimit =
-                Mathf.Lerp(maxSteerAngle, maxSteerAngle * 0.5f, steerFactor);
-
-            float targetSteer = moveInput.x * steerLimit;
-
-            frontLeft.steerAngle =
-                Mathf.Lerp(frontLeft.steerAngle, targetSteer, steeringSmooth);
-
-            frontRight.steerAngle =
-                Mathf.Lerp(frontRight.steerAngle, targetSteer, steeringSmooth);
-        }
-
-        // ---------- DRIFT ----------
-        void HandleDrift()
-        {
-            if (!isBraking || rb.linearVelocity.magnitude < 3f)
+            foreach (var wheel in wheels)
             {
-                RestoreRearGrip();
-                return;
+                if (!wheel.steer)
+                    continue;
+
+                float target =
+                    moveInput.x * maxSteerAngle;
+
+                Quaternion steerRot =
+                    Quaternion.Euler(0f, target, 0f);
+
+                wheel.transform.localRotation =
+                    Quaternion.Slerp(
+                        wheel.transform.localRotation,
+                        steerRot,
+                        steeringResponse * Time.deltaTime
+                    );
             }
-
-            SetRearFriction(driftSidewaysStiffness, driftForwardStiffness);
-
-            float yaw = moveInput.x * yawAssist;
-            rb.AddTorque(Vector3.up * yaw, ForceMode.Acceleration);
-        }
-
-        void RestoreRearGrip()
-        {
-            SetRearFriction(normalSidewaysStiffness, 1.2f);
-        }
-
-        void SetRearFriction(float sideways, float forward)
-        {
-            WheelFrictionCurve sf;
-            WheelFrictionCurve ff;
-
-            sf = rearLeft.sidewaysFriction;
-            sf.stiffness = sideways;
-            rearLeft.sidewaysFriction = sf;
-
-            sf = rearRight.sidewaysFriction;
-            sf.stiffness = sideways;
-            rearRight.sidewaysFriction = sf;
-
-            ff = rearLeft.forwardFriction;
-            ff.stiffness = forward;
-            rearLeft.forwardFriction = ff;
-
-            ff = rearRight.forwardFriction;
-            ff.stiffness = forward;
-            rearRight.forwardFriction = ff;
-        }
-
-        // ---------- VISUALS ----------
-        void UpdateWheelMeshes()
-        {
-            UpdateWheel(frontLeft, frontLeftMesh);
-            UpdateWheel(frontRight, frontRightMesh);
-            UpdateWheel(rearLeft, rearLeftMesh);
-            UpdateWheel(rearRight, rearRightMesh);
-        }
-
-        void UpdateWheel(WheelCollider col, Transform mesh)
-        {
-            if (!mesh) return;
-
-            col.GetWorldPose(out Vector3 pos, out Quaternion rot);
-            mesh.position = pos;
-            mesh.rotation = rot;
         }
     }
 }

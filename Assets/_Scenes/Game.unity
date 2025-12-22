@@ -127,17 +127,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 283843103656126986, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400313007873727117, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_Mass
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 400313007873727117, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_SuspensionSpring.damper
-      value: 8000
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 400313007873727117, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_SuspensionSpring.spring
-      value: 35000
+      value: 6000
       objectReference: {fileID: 0}
     - target: {fileID: 2766080186286440551, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: itemsCircle
@@ -189,11 +193,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2909829396782302984, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_SuspensionSpring.damper
-      value: 8000
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 2909829396782302984, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_SuspensionSpring.spring
-      value: 35000
+      value: 6000
       objectReference: {fileID: 0}
     - target: {fileID: 3190939972000722873, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_Name
@@ -205,11 +209,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3515113119676020647, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_SuspensionSpring.damper
-      value: 8000
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 3515113119676020647, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_SuspensionSpring.spring
-      value: 35000
+      value: 6000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: tireGrip
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: topSpeed
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: yawAssist
@@ -224,8 +236,68 @@ PrefabInstance:
       value: 3500
       objectReference: {fileID: 0}
     - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: lowSpeedBoost
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: maxSteerAngle
       value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: wheels.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: wheels.Array.data[0].steer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: wheels.Array.data[1].steer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: wheels.Array.data[2].drive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: wheels.Array.data[3].drive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: wheels.Array.data[0].transform
+      value: 
+      objectReference: {fileID: 76462608}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: wheels.Array.data[1].transform
+      value: 
+      objectReference: {fileID: 76462607}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: wheels.Array.data[2].transform
+      value: 
+      objectReference: {fileID: 76462606}
+    - target: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: wheels.Array.data[3].transform
+      value: 
+      objectReference: {fileID: 815061846}
+    - target: {fileID: 5638635295351007652, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: m_Mass
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 5638635295351007652, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: m_ImplicitCom
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5638635295351007652, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5638635295351007652, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: m_CenterOfMass.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5638635295351007652, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6714542042978941392, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_Mass
@@ -233,11 +305,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6714542042978941392, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_SuspensionSpring.damper
-      value: 8000
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 6714542042978941392, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_SuspensionSpring.spring
-      value: 35000
+      value: 6000
       objectReference: {fileID: 0}
     - target: {fileID: 6990165589951513231, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       propertyPath: m_IsActive
@@ -247,29 +319,42 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 523837148327566036, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
     m_RemovedGameObjects:
     - {fileID: 5289249318804567592, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+    - {fileID: 4128871430953085903, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+    - {fileID: 3116376455215637484, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+    - {fileID: 2054064999085144100, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+    - {fileID: 2214567964615256593, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+    - {fileID: 1232436863323731889, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3126043432882804045, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1169285755}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3190939972000722873, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 1872061664}
     - targetCorrespondingSourceObject: {fileID: 6990165589951513231, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1058647581}
   m_SourcePrefab: {fileID: 100100000, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
---- !u!114 &76462605 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3718156672877087478, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+--- !u!4 &76462606 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 420946132791997259, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
   m_PrefabInstance: {fileID: 76462604}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e8573301eaa44fbb4d82312e911c654, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Player.CarController
+--- !u!4 &76462607 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2231976378220231298, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+  m_PrefabInstance: {fileID: 76462604}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &76462608 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5199929796687425733, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+  m_PrefabInstance: {fileID: 76462604}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &321343094
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,11 +690,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!146 &430277883 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 3515113119676020647, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
-  m_PrefabInstance: {fileID: 76462604}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &438647953
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,11 +724,6 @@ Transform:
   - {fileID: 708344873}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!146 &479708189 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 6714542042978941392, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
-  m_PrefabInstance: {fileID: 76462604}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &536139760 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6560117900259594626, guid: 97937197fbebbdee486700516e47e1bc, type: 3}
@@ -743,7 +818,6 @@ GameObject:
   m_Component:
   - component: {fileID: 594340032}
   - component: {fileID: 594340035}
-  - component: {fileID: 594340034}
   - component: {fileID: 594340033}
   m_Layer: 0
   m_Name: UI Camera
@@ -811,14 +885,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!81 &594340034
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 594340031}
-  m_Enabled: 1
 --- !u!20 &594340035
 Camera:
   m_ObjectHideFlags: 0
@@ -1052,13 +1118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb2f450e50149f499d43ca247603b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Extensions.CarTweaker
-  car: {fileID: 76462605}
-  wheels:
-  - {fileID: 430277883}
-  - {fileID: 1696762084}
-  - {fileID: 479708189}
-  - {fileID: 812210253}
-  rb: {fileID: 1872061658}
 --- !u!1001 &747185133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1157,9 +1216,9 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!146 &812210253 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 2909829396782302984, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+--- !u!4 &815061846 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3420559386682340173, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
   m_PrefabInstance: {fileID: 76462604}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
@@ -1600,9 +1659,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.Game.Managers.GameManager
   playerPrefab: {fileID: 3190939972000722873, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
---- !u!146 &1696762084 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 400313007873727117, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
+--- !u!1 &1772426498 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3190939972000722873, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
   m_PrefabInstance: {fileID: 76462604}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1773007847
@@ -1733,6 +1792,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2855532171725876301, guid: 1bea16fbb0601217eb7d3d65d8d46421, type: 3}
   m_PrefabInstance: {fileID: 76462604}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &1872061664
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772426498}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 1, z: 4}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &1961456739
 GameObject:
   m_ObjectHideFlags: 0

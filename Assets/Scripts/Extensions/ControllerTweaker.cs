@@ -6,7 +6,7 @@ namespace Extensions
 {
     public class CarTweaker : MonoBehaviour
     {
-        [Header("Target Controller")]
+        /*[Header("Target Controller")]
         [SerializeField] private CarController car;
 
         [Header("Wheels")]
@@ -107,6 +107,6 @@ namespace Extensions
             SetSuspensionDistance(0.15f);
             SetSuspensionSpring(35000f);
             SetSuspensionDamper(4500f);
-        }
+        }*/
     }
 }
