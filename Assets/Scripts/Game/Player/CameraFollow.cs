@@ -14,7 +14,7 @@ namespace Game.Player
         [Header("Follow Speed")]
         public float followSpeed = 10f;
 
-        void LateUpdate()
+        private void LateUpdate()
         {
             Vector3 desiredPosition = target.position + target.TransformDirection(offset);
             Quaternion desiredRotation = target.rotation * offsetAngle;

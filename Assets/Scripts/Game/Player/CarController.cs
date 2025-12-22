@@ -24,7 +24,7 @@ namespace Game.Player
         public float wheelRadius = 0.35f;
 
         [Header("Grip")]
-        [Range(0f, 1f)] public float tireGrip = 0.9f;
+        public float tireGrip = 0.9f;
         public float tireMass = 20f;
 
         [Header("Steering")]
